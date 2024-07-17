@@ -1,23 +1,20 @@
-//Básico para configuração
-require('dotenv').config()
-const discord = require('discord.js')
-const client = new discord.Client({
-    intents: [
-        discord.Intents.FLAGS.GUILDS,
-        discord.Intents.FLAGS.GUILDS_MESSAGES
-    ]
-})
-const token = process.env.TOKEN
+const {Client, Events, GatewayIntentBits} = require('discord.js')
+const dotenv = require('dotenv').config()
 
-//Realizar o logind
-const isBotLoggedI = () => {
-    return client.readyAt !== null && client.readyAt !== undefined;
-}
 
-client.once('ready', () => {
-    console.log("O Bot está pronto");
-    console.log(`Logado com ${client.user.tag}`)
-    console.log('Status de login: ', isBotLoggedI())
-})
+//Novo cliente:
+const client = new Client({intents: [GatewayIntentBits.Guilds]});
 
-client.login(token)
+//Inciar aplicação:
+client.once(Events.ClientReady, readyClient => {
+    console.log(`Bot logado em ${readyClient.user.tag}`);
+});
+
+//Efetuar o login:
+client.login(process.env.TOKEN);
+
+//Registro de interações
+client.on(Events.InteractionCreate, interaction => {
+    if (!interaction.isChatInputCommand()) return
+    
+});
